@@ -21,6 +21,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Logging.AddConsole();
+
+
 var app = builder.Build();
 app.UseCors(op => op.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
