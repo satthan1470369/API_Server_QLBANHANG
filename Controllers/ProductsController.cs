@@ -56,7 +56,8 @@ namespace API_Server_QLBANHANG.Controllers
 
         //Get: api/products/id
         [HttpGet("{id}")]
-        public JsonResult Get_Products_By_Id(int id) {
+        public JsonResult Get_Products_By_Id(int id)
+        {
             string sql = "SELECT * FROM Products WHERE ProductID = " + id;
             DataTable dt = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ProductManagement");
@@ -86,8 +87,11 @@ namespace API_Server_QLBANHANG.Controllers
         }
         //Post: api/products
         [HttpPost]
-        public JsonResult Post_Products(Products product) {
-            string sql = @"insert into Products values (" + product.ProductID+ ", N'" + product.Name + "', N'" + product.TypeId + "' ,'0" + product.Importday + "')";
+        public JsonResult Post_Products(Products product)
+        {
+            // Lưu ý: Không đưa ProductID vào câu lệnh INSERT vì là identity
+            string sql = @"INSERT INTO Products (Name, TypeId, Importday, ImageUrl) 
+                           VALUES (N'" + product.Name + "', " + product.TypeId + ", '" + product.Importday + "', N'" + product.ImageUrl + "')";
             DataTable dt = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ProductManagement");
 
@@ -119,10 +123,11 @@ namespace API_Server_QLBANHANG.Controllers
         public JsonResult Put_Products(int id, Products product)
         {
             string sql = @"UPDATE Products 
-                   SET Name = N'" + product.Name + @"',
-                       TypeId = N'" + product.TypeId + @"',
-                       Importday = '" + product.Importday + @"'
-                   WHERE ProductID = " + id;
+                           SET Name = N'" + product.Name + @"',
+                               TypeId = " + product.TypeId + @",
+                               Importday = '" + product.Importday + @"',
+                               ImageUrl = N'" + product.ImageUrl + @"'
+                           WHERE ProductID = " + id;
             DataTable dt = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ProductManagement");
 
