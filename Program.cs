@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json.Serialization;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Logging.AddConsole();
 
+FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromJson(Environment.GetEnvironmentVariable("FIREBASE_CREDENTIALS"))
+});
 
 var app = builder.Build();
 app.UseCors(op => op.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
@@ -38,11 +44,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//Cấu hình upload ảnh
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
-    RequestPath = "/Images"
-});
 
 app.Run();

@@ -5,6 +5,7 @@ using System.Data;
 using API_Server_QLBANHANG.Model;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Firebase.Storage;
 
 namespace API_Server_QLBANHANG.Controllers
 {
@@ -183,23 +184,32 @@ namespace API_Server_QLBANHANG.Controllers
         // POST: api/products/upload
         [Route("UploadFile")]
         [HttpPost]
-        public JsonResult UploadFile()
+        public async Task<JsonResult> UploadFile()
         {
             try
             {
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
-                var physicalPath = _webHostEnvironment.ContentRootPath + "/Images/" + filename;
-                using (var stream = new FileStream(physicalPath, FileMode.Create))
-                {
-                    postedFile.CopyTo(stream);
-                }
-                return new JsonResult(filename);
+
+                // Khởi tạo Firebase Storage với tên bucket của bạn
+                var storage = new FirebaseStorage("banhang-e9c0b.firebasestorage.app");
+
+                // Upload file lên Firebase Storage
+                var stream = postedFile.OpenReadStream();
+                var uploadTask = await storage
+                    .Child("images") // Thư mục trên Firebase Storage
+                    .Child(filename)
+                    .PutAsync(stream);
+
+                // uploadTask là URL của file đã upload
+                string downloadUrl = uploadTask;
+
+                return new JsonResult(new { url = downloadUrl });
             }
-            catch(Exception)
+            catch (Exception ex)
             {
-                return new JsonResult("test.jpg");
+                return new JsonResult(new { message = "An error occurred", error = ex.Message });
             }
         }
     }
