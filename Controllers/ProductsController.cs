@@ -57,7 +57,7 @@ namespace API_Server_QLBANHANG.Controllers
         //Get: api/products/id
         [HttpGet("{id}")]
         public JsonResult Get_Products_By_Id(int id) {
-            string sql = "SELECT * FROM Products WHERE Products = " + id;
+            string sql = "SELECT * FROM Products WHERE ProductID = " + id;
             DataTable dt = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ProductManagement");
 
