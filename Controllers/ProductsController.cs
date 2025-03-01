@@ -6,6 +6,7 @@ using API_Server_QLBANHANG.Model;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Firebase.Storage;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API_Server_QLBANHANG.Controllers
 {
@@ -24,6 +25,7 @@ namespace API_Server_QLBANHANG.Controllers
 
         //Get: api/products
         [HttpGet]
+        [Authorize(Roles = "Read")]
         public JsonResult Get_Products()
         {
             string sql = "SELECT * FROM Products";
@@ -56,6 +58,7 @@ namespace API_Server_QLBANHANG.Controllers
 
         //Get: api/products/id
         [HttpGet("{id}")]
+        [Authorize(Roles = "Read")]
         public JsonResult Get_Products_By_Id(int id)
         {
             string sql = "SELECT * FROM Products WHERE ProductID = " + id;
@@ -87,6 +90,7 @@ namespace API_Server_QLBANHANG.Controllers
         }
         //Post: api/products
         [HttpPost]
+        [Authorize(Roles = "Read,Write")]
         public JsonResult Post_Products(Products product)
         {
             // Lưu ý: Không đưa ProductID vào câu lệnh INSERT vì là identity
@@ -120,6 +124,7 @@ namespace API_Server_QLBANHANG.Controllers
         }
         // PUT: api/products/id
         [HttpPut("{id}")]
+        [Authorize(Roles = "Read,Write")]
         public JsonResult Put_Products(int id, Products product)
         {
             string sql = @"UPDATE Products 
@@ -157,6 +162,7 @@ namespace API_Server_QLBANHANG.Controllers
 
         // DELETE: api/products/id
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Read,Write")]
         public JsonResult Delete_Products(int id)
         {
             string sql = @"DELETE FROM Products WHERE ProductID = " + id;
@@ -189,6 +195,7 @@ namespace API_Server_QLBANHANG.Controllers
         // POST: api/products/upload
         [Route("UploadFile")]
         [HttpPost]
+        [Authorize(Roles = "Read,Write")]
         public async Task<JsonResult> UploadFile()
         {
             try

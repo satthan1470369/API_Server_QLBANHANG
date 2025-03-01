@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using API_Server_QLBANHANG.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API_Server_QLBANHANG.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductTypeController : ControllerBase
     {
         private readonly IConfiguration _configuration;
