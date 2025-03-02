@@ -86,14 +86,15 @@ namespace API_Server_QLBANHANG.Controllers
                 return new JsonResult(new { message = "An error occurred", error = ex.Message });
             }
         }
-        //Post: api/products
+        // POST: api/products
         [HttpPost]
         [Authorize(Roles = "Write")]
         public JsonResult Post_Products(Products product)
         {
             // Lưu ý: Không đưa ProductID vào câu lệnh INSERT vì là identity
-            string sql = @"INSERT INTO Products (Name, TypeId, Importday, ImageUrl) 
-                           VALUES (N'" + product.Name + "', " + product.TypeId + ", '" + product.Importday + "', N'" + product.ImageUrl + "')";
+            string sql = @"INSERT INTO Products (Name, TypeId, Importday, ImageUrl, Price, Discount, HotTrend) 
+                   VALUES (N'" + product.Name + "', " + product.TypeId + ", '" + product.Importday + "', N'" + product.ImageUrl + "', "
+                           + product.Price + ", " + product.Discount + ", " + (product.HotTrend ? 1 : 0) + ")";
             DataTable dt = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ProductManagement");
 
@@ -120,17 +121,21 @@ namespace API_Server_QLBANHANG.Controllers
                 return new JsonResult(new { message = "An error occurred", error = ex.Message });
             }
         }
+
         // PUT: api/products/id
         [HttpPut("{id}")]
         [Authorize(Roles = "Write")]
         public JsonResult Put_Products(int id, Products product)
         {
             string sql = @"UPDATE Products 
-                           SET Name = N'" + product.Name + @"',
-                               TypeId = " + product.TypeId + @",
-                               Importday = '" + product.Importday + @"',
-                               ImageUrl = N'" + product.ImageUrl + @"'
-                           WHERE ProductID = " + id;
+                   SET Name = N'" + product.Name + @"',
+                       TypeId = " + product.TypeId + @",
+                       Importday = '" + product.Importday + @"',
+                       ImageUrl = N'" + product.ImageUrl + @"',
+                       Price = " + product.Price + @",
+                       Discount = " + product.Discount + @",
+                       HotTrend = " + (product.HotTrend ? 1 : 0) + @"
+                   WHERE ProductID = " + id;
             DataTable dt = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("ProductManagement");
 
@@ -157,6 +162,7 @@ namespace API_Server_QLBANHANG.Controllers
                 return new JsonResult(new { message = "An error occurred", error = ex.Message });
             }
         }
+
 
         // DELETE: api/products/id
         [HttpDelete("{id}")]
