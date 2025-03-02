@@ -9,7 +9,6 @@ namespace API_Server_QLBANHANG.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ProductTypeController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -85,6 +84,7 @@ namespace API_Server_QLBANHANG.Controllers
 
         // POST: api/ProductType
         [HttpPost]
+        [Authorize(Roles = "Write")]
         public JsonResult Post_ProductType(ProductType productType)
         {
             string sql = @"INSERT INTO ProductType (TypeName) 
@@ -118,6 +118,7 @@ namespace API_Server_QLBANHANG.Controllers
 
         // PUT: api/ProductType/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "Write")]
         public JsonResult Put_ProductType(int id, ProductType productType)
         {
             string sql = @"UPDATE ProductType 
@@ -152,6 +153,7 @@ namespace API_Server_QLBANHANG.Controllers
 
         // DELETE: api/ProductType/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Write")]
         public JsonResult Delete_ProductType(int id)
         {
             string sql = @"DELETE FROM ProductType WHERE TypeId = " + id;
