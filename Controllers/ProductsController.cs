@@ -25,7 +25,6 @@ namespace API_Server_QLBANHANG.Controllers
 
         //Get: api/products
         [HttpGet]
-        [Authorize(Roles = "Read,Write")]
         public JsonResult Get_Products()
         {
             string sql = "SELECT * FROM Products";
@@ -58,7 +57,6 @@ namespace API_Server_QLBANHANG.Controllers
 
         //Get: api/products/id
         [HttpGet("{id}")]
-        [Authorize(Roles = "Read,Write")]
         public JsonResult Get_Products_By_Id(int id)
         {
             string sql = "SELECT * FROM Products WHERE ProductID = " + id;
