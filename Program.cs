@@ -87,10 +87,10 @@ builder.Services.Configure<IdentityOptions>(option =>
 
 builder.Logging.AddConsole();
 
-FirebaseApp.Create(new AppOptions()
-{
-    Credential = GoogleCredential.FromJson(Environment.GetEnvironmentVariable("FIREBASE_CREDENTIALS"))
-});
+//FirebaseApp.Create(new AppOptions()
+//{
+//    Credential = GoogleCredential.FromJson(Environment.GetEnvironmentVariable("FIREBASE_CREDENTIALS"))
+//});
 
 // khai báo service Authentication + using thu vien
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
